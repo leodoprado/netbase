@@ -1,0 +1,234 @@
+
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) =>
+    b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <BaseHead
+      title={SITE_TITLE}
+      description={SITE_DESCRIPTION}
+    />
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <section class="introduction">
+        <h1>Artigos de Estudo</h1>
+        <p>
+          Uma base de conhecimento sobre o ecossistema .NET
+        </p>
+      </section>
+
+      <section class="posts" aria-label="Artigos publicados">
+        {posts.map((post) => (
+          <article class="post-card">
+            <a
+              href={`/blog/${post.id}/`}
+              class="post-link"
+            >
+              <div class="post-image">
+                {post.data.heroImage ? (
+                  <Image
+                    src={post.data.heroImage}
+                    alt=""
+                    width={720}
+                    height={405}
+                    format="webp"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div class="image-placeholder">
+                    <span>.NETbase</span>
+                  </div>
+                )}
+              </div>
+
+              <div class="post-content">
+                <h2>{post.data.title}</h2>
+
+                <p class="description">
+                  {post.data.description}
+                </p>
+
+                <p class="date">
+                  <FormattedDate date={post.data.pubDate} />
+                </p>
+              </div>
+            </a>
+          </article>
+        ))}
+      </section>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+
+<style>
+  main {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  .introduction {
+    margin-bottom: 2.5rem;
+  }
+
+  .introduction h1 {
+    margin: 0 0 0.75rem;
+    color: #111827;
+    font-size: clamp(1.65rem, 4vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.04em;
+  }
+
+  .introduction p {
+    max-width: 700px;
+    margin: 0;
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  /* Mobile first: uma coluna */
+  .posts {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .post-card {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .post-link {
+    display: block;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .post-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #f1f0fa;
+  }
+
+  .post-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.25s ease;
+  }
+
+  .post-link:hover img {
+    transform: scale(1.035);
+  }
+
+  .image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: #f1edff;
+    color: #502bd3;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .post-content {
+    padding-top: 1rem;
+    min-width: 0;
+  }
+
+  .post-content h2 {
+    margin: 0 0 0.65rem;
+    color: #111827;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: -0.025em;
+    overflow-wrap: anywhere;
+  }
+
+  .post-link:hover h2 {
+    color: #502bd3;
+  }
+
+  .description {
+    margin: 0 0 0.75rem;
+    color: #64748b;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+  }
+
+  .date {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 0.8rem;
+  }
+
+  /* Tablets */
+  @media (min-width: 640px) {
+    .posts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem 1.25rem;
+    }
+  }
+
+  /* Desktop */
+  @media (min-width: 1024px) {
+    .posts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2.5rem 1.5rem;
+    }
+  }
+
+  /* Smartphones */
+  @media (max-width: 639px) {
+    main {
+      padding: 2rem 1rem;
+    }
+
+    .introduction {
+      margin-bottom: 2rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .post-image img {
+      transition: none;
+    }
+  }
+</style>
+

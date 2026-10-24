@@ -1,0 +1,70 @@
+
+<header>
+  <nav aria-label="Navegação principal">
+    <a
+      href="/blog/"
+      class="logo"
+      aria-label="NetBase - Página inicial"
+    >
+      <span class="logo-net">.NET</span><span class="logo-base">BASE</span>
+    </a>
+  </nav>
+</header>
+
+<style>
+    header {
+		background: var(--background);
+		border-bottom: 1px solid var(--border);
+		box-shadow: none;
+	}
+
+	nav {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.logo {
+		display: inline-flex;
+		align-items: baseline;
+		padding: 1em 0.5em;
+		font-family: var(--font-jakarta), sans-serif;
+		font-size: 1.55rem;
+		line-height: 1.2;
+		letter-spacing: -0.035em;
+		text-decoration: none;
+		border: none;
+		white-space: nowrap;
+    	letter-spacing: 0.02em;
+	}
+
+	.logo-net {
+		color: #502BD3;
+		font-weight: 700;
+	}
+
+	.logo-base {
+		color: #0b0b0b;
+		font-weight: 400;
+	}
+
+	.logo:hover {
+		opacity: 0.85;
+	}
+
+  .logo:focus-visible {
+    outline: 2px solid #502bd3;
+    outline-offset: 5px;
+    border-radius: 3px;
+  }
+
+  @media (max-width: 720px) {
+    nav {
+      min-height: 68px;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+    }
+  }
+</style>
